@@ -8,8 +8,10 @@ import json
 import difflib
 import asyncio
 import random
-
-from google import genai
+try:
+    from google import genai
+except:
+    import google.generativeai as genai
 from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
 from nltk.translate.meteor_score import single_meteor_score
@@ -295,7 +297,7 @@ class openai_llm:
 
         self.model = model
 
-        api_key = os.environ["api_key"]
+        api_key = os.getenv("api_key", '')
 
         self.client = OpenAI(
             api_key=api_key,

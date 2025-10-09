@@ -1,3 +1,151 @@
+
+## Filter Any keyword/Image from Medical Benchmarks
+
+
+
+## 📌 Introduction
+This project is a secondary development based on **MedEvalKit** that enables aggregation of all current medical benchmarks with specialized filtering capabilities. Our framework supports both **model-based** and **keyword-based** filtering rules to extract and process relevant medical data for evaluation.
+
+## 🔧 Filter Framework
+
+### Overview
+The Filter framework provides a flexible system for collecting, filtering, and processing medical benchmark datasets. It supports both **keyword matching** and **AI model judgment** to extract specific medical content from large multimodal benchmark collections.
+
+### Quick Start Guide
+
+#### Step 1: Collect Medical Benchmarks
+First, collect and aggregate medical benchmark datasets:
+```bash
+python collect_datasets.py --output total/mm_benchmarks.json
+```
+
+#### Step 2: Filter Medical Data
+Use the Filter framework to extract specific medical content:
+
+**Keyword-based filtering (fast, less accurate):**
+```bash
+python filter_datasets.py \
+    --input total/mm_benchmarks.json \
+    --output filter/dental_samples.json \
+    --keyword_only \
+    --template text
+```
+
+**AI model-based filtering (accurate, slower):**
+```bash
+python filter_datasets.py \
+    --input total/mm_benchmarks.json \
+    --output filter/dental_samples.json \
+    --gpt_judgment \
+    --template image_text \
+    --model_name gpt-4.1-mini \
+    --api_key YOUR_API_KEY \
+    --api_url YOUR_API_URL
+```
+
+**Note:** API credentials (`--api_key` and `--api_url`) are **only required** when using `--gpt_judgment` mode. For `--keyword_only` mode, these parameters are not needed.
+
+**Custom keyword filtering:**
+```bash
+python filter_datasets.py \
+    --input total/mm_benchmarks.json \
+    --output filter/cardiac_samples.json \
+    --keyword_only \
+    --template text
+```
+
+#### Step 3: Integrate with Evaluation
+Use the filtered data with the evaluation framework:
+```bash
+#!/bin/bash
+
+# Use filtered dataset for targeted evaluation
+EVAL_DATASETS="custom_dental_benchmark"
+
+# Configuration
+MODEL_NAME="Qwen2.5-VL"
+MODEL_PATH="Qwen2.5-VL-7B-Instruct"
+DATASETS_PATH="local"  # Point to your filtered data
+OUTPUT_PATH="eval_results/{}"
+
+# Run evaluation on filtered dataset
+python eval.py \
+    --eval_datasets "$EVAL_DATASETS" \
+    --datasets_path "$DATASETS_PATH" \
+    --output_path "$OUTPUT_PATH" \
+    --model_name "$MODEL_NAME" \
+    --model_path "$MODEL_PATH"
+```
+
+### Filter Features
+
+**Supported Template Types:**
+- `text`: Text-based filtering using prompts
+- `image`: Image-based content analysis
+- `combined`: Automatic template selection based on data type
+- `image_text`: Combined image and text analysis
+- `debug`: Image description for analysis and debugging
+
+**Filtering Methods:**
+- **Keyword-based**: Fast pattern matching using medical keywords
+  - No API credentials required
+  - Suitable for large-scale filtering
+  - Less accurate but much faster
+- **Model-based**: AI-powered content analysis for higher accuracy
+  - Requires API credentials (`--api_key` and `--api_url`)
+  - More accurate but slower
+  - Supports image and text analysis
+- **Hybrid approach**: Combines keyword pre-filtering with model validation
+
+**Data Processing:**
+- Supports both dictionary and list formats
+- Batch processing for large datasets
+- Checkpointing for interrupted operations
+- Parallel processing for efficiency
+
+**Output Format:**
+```json
+[
+  {
+    "prompt": "What is the diagnosis?",
+    "answer": "Tooth decay",
+    "dataset": "MMMU-Medical-test",
+    "gt_content": "The patient shows signs of dental caries...",
+    "img_path": ["images/sample1.jpg"],
+    "GPT": true,
+    "matched_keywords": ["tooth", "dental"],
+    "match": true
+  }
+]
+```
+
+### Parameter Reference
+
+| Parameter | Required For | Description | Example |
+|-----------|--------------|-------------|---------|
+| `--keyword_only` | Keyword filtering | Use keyword-based filtering only | `--keyword_only` |
+| `--gpt_judgment` | AI filtering | Use GPT-based content analysis | `--gpt_judgment` |
+| `--api_key` | GPT judgment only | API key for GPT service | `--api_key sk-...` |
+| `--api_url` | GPT judgment only | API URL for GPT service | `--api_url https://api.example.com` |
+| `--category` | Both modes | Medical category for filtering | `--category dental` |
+| `--template` | Both modes | Template type for analysis | `--template image_text` |
+| `--model_name` | GPT judgment only | GPT model name | `--model_name gpt-4.1-mini` |
+
+**Important Notes:**
+- `--api_key` and `--api_url` are **only required** when using `--gpt_judgment` mode
+- For `--keyword_only` mode, API credentials are **not needed**
+- Available categories: `dental`, `cardiac`, `cancer`, `neurological`, `respiratory`, `general`
+- Available templates: `text`, `image`, `combined`, `image_text`, `debug`
+
+This framework enables researchers to create targeted medical evaluation datasets by filtering large benchmark collections based on specific medical domains, symptoms, or criteria, making evaluation more focused and efficient.
+
+
+
+
+## Below is original repo introduction
+
+
+
 <h3 align="center">
   🩺 MedEvalKit: A Unified Medical Evaluation Framework
 </h3>
@@ -22,8 +170,11 @@
 
 ---
 
+
+
+
 ## 📌 Introduction
-A comprehensive evaluation framework for **Large Medical Models (LMMs/LLMs)** in the healthcare domain.  
+A comprehensive evaluation framework for **Large Medical Models (LMMs/LLMs)** in the healthcare domain.
 We welcome contributions of new models, benchmarks, or enhanced evaluation metrics!
 
 ---

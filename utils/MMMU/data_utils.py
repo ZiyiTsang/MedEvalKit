@@ -154,7 +154,7 @@ def construct_prompt(sample):
         """
         empty_prompt = empty_prompt_sample_structure.format(question, example)
 
-        if os.environ["REASONING"] == "True":
+        if os.environ.get("REASONING", "False") == "True":
             empty_prompt += 'Answer with the option\'s letter from the given choices and put the letter in one "\\boxed{}".'
         else:
             empty_prompt += "Answer with the option's letter from the given choices directly." 
@@ -166,7 +166,27 @@ def construct_prompt(sample):
         res_dict['empty_prompt'] = empty_prompt
         res_dict['final_input_prompt'] = empty_prompt
 
-        res_dict['gt_content'] = options[ord(sample['answer'].upper()) - ord('A')]
+        # Handle cases where answer is '?' (test dataset) by finding the correct option from gt_content
+        if sample['answer'] == '?':
+            # For test dataset, we need to find which option matches the gt_content
+            gt_content = sample.get('gt_content', '')
+            if gt_content and options:
+                # Find the index of the option that matches gt_content
+                for idx, option in enumerate(options):
+                    if option.strip() == gt_content.strip():
+                        # Convert index to letter (0->A, 1->B, etc.)
+                        correct_choice = chr(ord('A') + idx)
+                        res_dict['correct_choice'] = correct_choice
+                        break
+                else:
+                    # If no exact match found, keep as '?'
+                    res_dict['correct_choice'] = '?'
+            else:
+                res_dict['correct_choice'] = '?'
+            res_dict['gt_content'] = gt_content
+        else:
+            # For validation dataset with normal answers
+            res_dict['gt_content'] = options[ord(sample['answer'].upper()) - ord('A')]
     else:
         empty_prompt_sample_structure = """
 {}
@@ -174,7 +194,7 @@ def construct_prompt(sample):
         """
         empty_prompt = empty_prompt_sample_structure.format(question)
 
-        if os.environ["REASONING"] == "True":
+        if os.environ.get("REASONING", "False") == "True":
             empty_prompt += 'Answer the question using a single word or phrase and put the answer in one "\\boxed{}".'
         else:
             empty_prompt += "Answer the question using a single word or phrase." 

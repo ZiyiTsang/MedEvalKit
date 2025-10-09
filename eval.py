@@ -8,6 +8,50 @@ from argparse import ArgumentParser
 from LLMs import init_llm
 import gc
 
+from utils import (
+    Medbullets_op4,
+    Medbullets_op5,
+    MedXpertQA,
+    MMMU,
+    OmniMedVQA,
+    PATH_VQA,
+    PMC_VQA,
+    SLAKE,
+    SuperGPQA,
+    VQA_RAD,
+    HealthBench,
+    PubMedQA,
+    MedMCQA,
+    MedQA_USMLE,
+    MMLU,
+    CMB,
+    CMExam,
+    MedQA_MCMLE,
+    CMMLU,
+    IU_XRAY,
+    CheXpert_Plus,
+    MIMIC_CXR,
+    MedFrameQA,
+    Radrestruct,
+    )
+
+
+
+def prepare_benchmark(model,eval_dataset,eval_dataset_path,eval_output_path):
+    # Hallu,Geometry3k
+    supported_dataset = ["MMMU-Medical-test","MMMU-Medical-val","PATH_VQA","PMC_VQA","VQA_RAD","SLAKE","MedQA_USMLE","MedMCQA","PubMedQA","OmniMedVQA","Medbullets_op4","Medbullets_op5","MedXpertQA-Text","MedXpertQA-MM","SuperGPQA""HealthBench","IU_XRAY","CheXpert_Plus","MIMIC_CXR","CMB","CMExam","CMMLU","MedQA_MCMLE","MedFrameQA"]
+
+    if eval_dataset in ["MMMU-Medical-test", "MMMU-Medical-val"]:
+        if eval_dataset_path:
+            eval_dataset_path = eval_dataset_path.replace(eval_dataset,"MMMU")
+        _ , subset , split = eval_dataset.split("-")
+        dataset = MMMU(model,eval_dataset_path,eval_output_path,split,subset)
+
+
+
+    return dataset
+
+
 def set_seed(seed_value):
     """
     Set the seed for PyTorch (both CPU and CUDA), Python, and NumPy for reproducible results.
@@ -102,12 +146,12 @@ def main():
 
     os.makedirs(args.output_path, exist_ok=True)
 
-    print('initializing LLM...')
-    model = init_llm(args)
+    # print('initializing LLM...')
+    # model = init_llm(args)
+    model=None
     
     total_results_path = os.path.join(args.output_path,'total_results.json')
 
-    from benchmarks import prepare_benchmark
 
     for eval_dataset in tqdm(args.eval_datasets):
         set_seed(args.seed)
@@ -118,6 +162,7 @@ def main():
         os.makedirs(eval_output_path, exist_ok=True)
         benchmark = prepare_benchmark(model,eval_dataset,eval_dataset_path,eval_output_path)
         benchmark.load_data()
+        
         final_results = benchmark.eval() if benchmark else {}
         print(f'final results on {eval_dataset}: {final_results}')
         if final_results is not None:

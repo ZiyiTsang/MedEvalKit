@@ -1,1 +1,17 @@
 *pyc
+datas/OmniMedVQA
+datas/PMC-VQA
+datas/SLAKE
+datas/MedXpertQA
+*.tgz
+*.zip
+*.jpg
+*.json
+total
+filter
+*total*
+*filter*
+*.png
+images/*
+!filter_datasets.py
+!filter_source

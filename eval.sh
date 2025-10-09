@@ -1,9 +1,9 @@
 #!/bin/bash
 export HF_ENDPOINT=https://hf-mirror.com
 # MMMU-Medical-test,MMMU-Medical-val,PMC_VQA,MedQA_USMLE,MedMCQA,PubMedQA,OmniMedVQA,Medbullets_op4,Medbullets_op5,MedXpertQA-Text,MedXpertQA-MM,SuperGPQA,HealthBench,IU_XRAY,CheXpert_Plus,MIMIC_CXR,CMB,CMExam,CMMLU,MedQA_MCMLE,VQA_RAD,SLAKE,PATH_VQA,MedFrameQA,Radrestruct
-EVAL_DATASETS="Medbullets_op4" 
+EVAL_DATASETS="MMMU-Medical-test, MMMU-Medical-val"
 DATASETS_PATH="hf"
-OUTPUT_PATH="eval_results/{}"
+OUTPUT_PATH="eval_results/*"
 # TestModel,Qwen2-VL,Qwen2.5-VL,BiMediX2,LLava_Med,Huatuo,InternVL,Llama-3.2,LLava,Janus,HealthGPT,BiomedGPT,Vllm_Text,MedGemma,Med_Flamingo,MedDr
 MODEL_NAME="Qwen2.5-VL"
 MODEL_PATH="Qwen2.5-VL-7B-Instruct"
