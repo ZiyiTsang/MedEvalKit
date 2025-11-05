@@ -4,7 +4,7 @@
 
 
 ## 📌 Introduction
-This project is a secondary development based on **MedEvalKit** that enables aggregation of all current medical benchmarks with specialized filtering capabilities. Our framework supports both **model-based** and **keyword-based** filtering rules to extract and process relevant medical data for evaluation.
+This project is a secondary development based on [**MedEvalKit**](https://github.com/alibaba-damo-academy/MedEvalKit) that enables aggregation and filter on all current medical benchmarks. Our framework supports both **model-based** and **keyword-based** filtering rules to extract and process relevant medical data for evaluation.
 
 ## 🔧 Filter Framework
 
@@ -69,6 +69,8 @@ DATASETS_PATH="local"  # Point to your filtered data
 OUTPUT_PATH="eval_results/{}"
 
 # Run evaluation on filtered dataset
+After filtering, run the original evaluation script to assess the performance of the model on the filtered dataset.
+ 
 python eval.py \
     --eval_datasets "$EVAL_DATASETS" \
     --datasets_path "$DATASETS_PATH" \
@@ -137,7 +139,6 @@ python eval.py \
 - Available categories: `dental`, `cardiac`, `cancer`, `neurological`, `respiratory`, `general`
 - Available templates: `text`, `image`, `combined`, `image_text`, `debug`
 
-This framework enables researchers to create targeted medical evaluation datasets by filtering large benchmark collections based on specific medical domains, symptoms, or criteria, making evaluation more focused and efficient.
 
 
 
