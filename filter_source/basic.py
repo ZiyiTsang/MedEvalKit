@@ -58,7 +58,7 @@ class Filter:
                  template_type: str = "text", datasets: List[str] = None,
                  skip_datasets: List[str] = None,
                  max_image_dimension: int = 1024, compress_on_413_only: bool = True,
-                 keywords: set = None, category_name: str = "medical"):
+                 keywords: set = None, category_name: str = "general"):
         """
         Initialize the filter
         

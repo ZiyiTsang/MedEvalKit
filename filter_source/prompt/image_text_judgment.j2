@@ -1,12 +1,12 @@
-Please analyze both the provided medical image and the question to determine if they are related to teeth, oral health, or dental care. Answer only "yes", "no", or "none".
+Please analyze both the provided medical image and the question to determine if they are related to {{ category_name }}. Answer only "yes", "no", or "none".
 ----------------------------------------------------------------
 Question:
 {{ prompt }}
 ----------------------------------------------------------------
 
 Criteria for judgment:
-- If you can see the image clearly and both the image AND the question are clearly related to teeth, oral health, or dental care, answer "yes"
-- If you can see the image clearly but either the image OR the question is not clearly related to teeth, oral health, or dental care, answer "no"
+- If you can see the image clearly and both the image AND the question are clearly related to {{ category_name }}, answer "yes"
+- If you can see the image clearly but either the image OR the question is not clearly related to {{ category_name }}, answer "no"
 - If you cannot see the image at all or the image is not visible, answer "none"
 
 IMPORTANT:

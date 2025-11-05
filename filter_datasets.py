@@ -49,13 +49,13 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Filter medical samples from multimodal benchmarks")
     
     # Input/output paths
-    parser.add_argument('--input', type=str, default='total2/mm_benchmarks.json',
+    parser.add_argument('--input', type=str, default='mm_benchmarks.json',
                        help="Input multimodal benchmarks json file path")
-    parser.add_argument('--output', type=str, default='filter/filtered_samples.json',
+    parser.add_argument('--output', type=str, default='filtered_samples.json',
                        help="Output filtered samples json file path")
     
     # Medical category selection
-    parser.add_argument('--category', type=str, default='dental',
+    parser.add_argument('--category', type=str, default='general',
                        choices=['dental', 'cardiac', 'cancer', 'neurological', 'respiratory', 'general'],
                        help="Medical category for filtering")
     
@@ -67,7 +67,7 @@ def parse_args():
                             help="Use GPT judgment after keyword filtering (slower but more accurate)")
     
     # GPT configuration
-    parser.add_argument('--model_name', type=str, default='gpt-4.1-mini',
+    parser.add_argument('--model_name', type=str, default='gpt-4',
                        help="GPT model name for judgment")
     parser.add_argument('--api_key', type=str, required=False,
                        help="API key for GPT service (required for GPT judgment)")

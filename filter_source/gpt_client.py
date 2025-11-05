@@ -22,9 +22,9 @@ from PIL import Image
 class GPT5V:
     """GPT client for judgment using OpenAI-compatible APIs"""
     
-    def __init__(self, api_key: str, api_url: str, model_name='gpt-4.1-mini', 
-                 max_completion_tokens=4096, reasoning_effort='medium', 
-                 verbosity='medium', max_image_dimension=1024, 
+    def __init__(self, api_key: str, api_url: str, model_name='gpt-4',
+                 max_completion_tokens=4096, reasoning_effort='medium',
+                 verbosity='medium', max_image_dimension=1024,
                  compress_on_413_only=True):
         """
         Initialize the GPT client
